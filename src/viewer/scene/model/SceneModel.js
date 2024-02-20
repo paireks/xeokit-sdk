@@ -1475,6 +1475,7 @@ export class SceneModel extends Component {
      * @type {Number[]}
      */
     set rotation(value) {
+        console.log("Rotation is set");
         this._rotation.set(value || [0, 0, 0]);
         math.eulerToQuaternion(this._rotation, "XYZ", this._quaternion);
         this._setWorldMatrixDirty();
@@ -1501,6 +1502,7 @@ export class SceneModel extends Component {
      * @type {Number[]}
      */
     set quaternion(value) {
+        console.log("Quaternion");
         this._quaternion.set(value || [0, 0, 0, 1]);
         math.quaternionToEuler(this._quaternion, "XYZ", this._rotation);
         this._setWorldMatrixDirty();

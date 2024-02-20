@@ -311,14 +311,17 @@ export class SceneModelMesh {
         if (this._aabbWorldDirty) {
             math.AABB3ToOBB3(this._aabbLocal, tempOBB3);
             if (this.transform) {
+                console.log("Hehe");
                 math.transformOBB3(this.transform.worldMatrix, tempOBB3, tempOBB3b);
                 math.transformOBB3(this.model.worldMatrix, tempOBB3b, tempOBB3c);
                 math.OBB3ToAABB3(tempOBB3c, this._aabbWorld);
             } else {
+                console.log("Still");
                 math.transformOBB3(this.model.worldMatrix, tempOBB3, tempOBB3b);
                 math.OBB3ToAABB3(tempOBB3b, this._aabbWorld);
             }
             if (this.origin) {
+                console.log(this.origin);
                 const origin = this.origin;
                 this._aabbWorld[0] += origin[0];
                 this._aabbWorld[1] += origin[1];

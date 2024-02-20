@@ -177,7 +177,13 @@
 
 <script type="module">
 
-    import {Viewer, WebIFCLoaderPlugin, NavCubePlugin, TreeViewPlugin} from "../../dist/xeokit-sdk.min.es.js";
+    import {Mesh} from "../../src/viewer/scene/mesh/Mesh.js";
+    import {Viewer} from "../../src/viewer/Viewer.js";
+    import {WebIFCLoaderPlugin} from "../../src/plugins/WebIFCLoaderPlugin/WebIFCLoaderPlugin.js";
+    import {ReadableGeometry} from "../../src/viewer/scene/geometry/ReadableGeometry.js";
+    import {buildBoxLinesGeometryFromAABB} from "../../src/viewer/scene/geometry/builders/buildBoxLinesGeometry.js";
+    import {NavCubePlugin, TreeViewPlugin} from "../../dist/xeokit-sdk.min.es.js";
+
 
     const viewer = new Viewer({
         canvasId: "myCanvas",
@@ -216,6 +222,25 @@
     });
 
     sceneModel.on("loaded", ()=>{
+        sceneModel.rotation = [0, 70, 0];
+
+        let aabb = viewer.scene.aabb;
+        console.log(aabb);
+
+        /*        new Mesh(viewer.scene, {
+                    geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({
+                        id: "aabb",
+                        aabb: aabb,
+                    })),
+                });*/
+
+        new Mesh(viewer.scene, {
+            geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({
+                id: "aabb",
+                aabb: aabb,
+            })),
+        });
+
         viewer.cameraFlight.jumpTo(sceneModel);
     });
 

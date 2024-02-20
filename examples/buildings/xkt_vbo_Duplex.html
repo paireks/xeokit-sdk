@@ -164,7 +164,12 @@
 
 <script type="module">
 
-    import {Viewer, XKTLoaderPlugin, NavCubePlugin, TreeViewPlugin, FastNavPlugin} from "../../dist/xeokit-sdk.min.es.js";
+    import {Mesh} from "../../src/viewer/scene/mesh/Mesh.js";
+    import {Viewer} from "../../src/viewer/Viewer.js";
+    import {XKTLoaderPlugin} from "../../src/plugins/XKTLoaderPlugin/XKTLoaderPlugin.js";
+    import {ReadableGeometry} from "../../src/viewer/scene/geometry/ReadableGeometry.js";
+    import {buildBoxLinesGeometryFromAABB} from "../../src/viewer/scene/geometry/builders/buildBoxLinesGeometry.js";
+    import {PhongMaterial, NavCubePlugin, TreeViewPlugin, FastNavPlugin} from "../../dist/xeokit-sdk.min.es.js";
 
     const viewer = new Viewer({
         canvasId: "myCanvas",
@@ -213,15 +218,30 @@
         dtxEnabled: true
     });
 
-    sceneModel.on("loaded", ()=>{
-        viewer.cameraFlight.jumpTo(sceneModel);
-    });
 
-    const t0 = performance.now();
-    document.getElementById("time").innerHTML = "Loading model...";
-    sceneModel.on("loaded", function () {
-        const t1 = performance.now();
-        document.getElementById("time").innerHTML = "Model loaded in " + Math.floor(t1 - t0) / 1000.0 + " seconds<br>Objects: " + sceneModel.numEntities;
+    sceneModel.on("loaded", ()=>{
+        sceneModel.rotation = [0, 70, 0];
+        let aabb = viewer.scene.aabb;
+        console.log(aabb);
+
+/*        new Mesh(viewer.scene, {
+            geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({
+                id: "aabb",
+                aabb: aabb,
+            })),
+        });*/
+
+        new Mesh(viewer.scene, {
+            geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({
+                id: "aabb",
+                aabb: aabb,
+            })),
+            material: new PhongMaterial(viewer.scene, {
+                emissive: [0, 1,]
+            })
+        });
+
+        viewer.cameraFlight.jumpTo(sceneModel);
     });
 
     window.viewer = viewer;
