@@ -301,6 +301,7 @@ export class SceneModelMesh {
      * @private
      */
     set aabb(aabb) { // Called by SceneModel
+        console.log("Local aabb was set")
         this._aabbLocal = aabb;
     }
 
@@ -309,6 +310,7 @@ export class SceneModelMesh {
      */
     get aabb() { // called by SceneModelEntity
         if (this._aabbWorldDirty) {
+            console.log(this._aabbLocal)
             math.AABB3ToOBB3(this._aabbLocal, tempOBB3);
             if (this.transform) {
                 console.log("Hehe");
@@ -321,7 +323,6 @@ export class SceneModelMesh {
                 math.OBB3ToAABB3(tempOBB3b, this._aabbWorld);
             }
             if (this.origin) {
-                console.log(this.origin);
                 const origin = this.origin;
                 this._aabbWorld[0] += origin[0];
                 this._aabbWorld[1] += origin[1];
@@ -330,6 +331,7 @@ export class SceneModelMesh {
                 this._aabbWorld[4] += origin[1];
                 this._aabbWorld[5] += origin[2];
             }
+            console.log(this._aabbWorld)
             this._aabbWorldDirty = false;
         }
         return this._aabbWorld;

@@ -218,18 +218,18 @@
         dtxEnabled: true
     });
 
-
+    let aabb = null;
     sceneModel.on("loaded", ()=>{
-        sceneModel.rotation = [0, 70, 0];
-        let aabb = viewer.scene.aabb;
-        console.log(aabb);
+/*        aabb = viewer.scene.aabb;
 
-/*        new Mesh(viewer.scene, {
+        new Mesh(viewer.scene, {
             geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({
                 id: "aabb",
                 aabb: aabb,
             })),
         });*/
+        sceneModel.rotation = [0, 70, 0];
+        aabb = viewer.scene.aabb;
 
         new Mesh(viewer.scene, {
             geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({

@@ -2795,6 +2795,7 @@ export class SceneModel extends Component {
                 const position = cfg.position || DEFAULT_POSITION;
                 const rotation = cfg.rotation || DEFAULT_ROTATION;
                 math.eulerToQuaternion(rotation, "XYZ", DEFAULT_QUATERNION);
+                console.log("Rotation has been set")
                 cfg.meshMatrix = math.composeMat4(position, DEFAULT_QUATERNION, scale, math.mat4());
             }
 
@@ -2989,6 +2990,7 @@ export class SceneModel extends Component {
                     const position = cfg.position || DEFAULT_POSITION;
                     const rotation = cfg.rotation || DEFAULT_ROTATION;
                     math.eulerToQuaternion(rotation, "XYZ", DEFAULT_QUATERNION);
+                    console.log("Rotation has been set there")
                     cfg.meshMatrix = math.composeMat4(position, DEFAULT_QUATERNION, scale, math.mat4());
                 }
 

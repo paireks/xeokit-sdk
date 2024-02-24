@@ -177,7 +177,11 @@
 
 <script type="module">
 
-    import {Viewer, WebIFCLoaderPlugin, NavCubePlugin, TreeViewPlugin} from "../../dist/xeokit-sdk.min.es.js";
+    import {Mesh} from "../../src/viewer/scene/mesh/Mesh.js";
+    import {Viewer} from "../../src/viewer/Viewer.js";
+    import {ReadableGeometry} from "../../src/viewer/scene/geometry/ReadableGeometry.js";
+    import {buildBoxLinesGeometryFromAABB} from "../../src/viewer/scene/geometry/builders/buildBoxLinesGeometry.js";
+    import {PhongMaterial,WebIFCLoaderPlugin, NavCubePlugin, TreeViewPlugin} from "../../dist/xeokit-sdk.min.es.js";
 
     const viewer = new Viewer({
         canvasId: "myCanvas",
@@ -217,7 +221,28 @@
         dtxEnabled: true
     });
 
+    let aabb = null;
     sceneModel.on("loaded", ()=>{
+/*        aabb = viewer.scene.aabb;
+
+        new Mesh(viewer.scene, {
+            geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({
+                id: "aabb",
+                aabb: aabb,
+            })),
+        });*/
+        sceneModel.rotation = [0, 70, 0];
+        aabb = viewer.scene.aabb;
+
+        new Mesh(viewer.scene, {
+            geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({
+                id: "aabb",
+                aabb: aabb,
+            })),
+            material: new PhongMaterial(viewer.scene, {
+                emissive: [0, 1,]
+            })
+        });
         viewer.cameraFlight.jumpTo(sceneModel);
     });
 
