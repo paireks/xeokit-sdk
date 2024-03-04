@@ -26,6 +26,8 @@ class Renderers {
     }
 
     _compile() {
+        console.log("compilation");
+        console.log(this._scene);
         if (this._colorRenderer && (!this._colorRenderer.getValid())) {
             this._colorRenderer.destroy();
             this._colorRenderer = null;

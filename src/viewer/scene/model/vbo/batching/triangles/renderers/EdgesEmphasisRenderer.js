@@ -1,5 +1,5 @@
 import {TrianglesBatchingRenderer} from "./TrianglesBatchingRenderer.js";
-import {EdgesRenderer} from "./EdgesRenderer";
+import {EdgesRenderer} from "./EdgesRenderer.js";
 
 
 /**
@@ -114,6 +114,7 @@ export class EdgesEmphasisRenderer extends EdgesRenderer {
         src.push("out vec4 outColor;");
         src.push("void main(void) {");
         if (clipping) {
+            console.log("Edges renderer with clipping");
             src.push("  bool clippable = (int(vFlags) >> 16 & 0xF) == 1;");
             src.push("  if (clippable) {");
             src.push("  float dist = 0.0;");
