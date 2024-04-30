@@ -139,7 +139,7 @@ export class EdgesEmphasisRenderer extends EdgesRenderer {
         if (scene.logarithmicDepthBufferEnabled) {
             src.push("    gl_FragDepth = isPerspective == 0.0 ? gl_FragCoord.z : log2( vFragDepth ) * logDepthBufFC * 0.5;");
         }
-        src.push("outColor = vColor;");
+        src.push("outColor = newColor;");
         src.push("}");
         return src;
     }

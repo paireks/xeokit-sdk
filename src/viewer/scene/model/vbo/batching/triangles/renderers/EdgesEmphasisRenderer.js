@@ -116,7 +116,6 @@ export class EdgesEmphasisRenderer extends EdgesRenderer {
         src.push("out vec4 outColor;");
         src.push("void main(void) {");
         if (clipping) {
-            console.log("Edges renderer with clipping");
             src.push("  vec4 newColor;");
             src.push("  newColor = vColor;");
             src.push("  bool clippable = (int(vFlags) >> 16 & 0xF) == 1;");
@@ -138,7 +137,7 @@ export class EdgesEmphasisRenderer extends EdgesRenderer {
         if (scene.logarithmicDepthBufferEnabled) {
             src.push("    gl_FragDepth = isPerspective == 0.0 ? gl_FragCoord.z : log2( vFragDepth ) * logDepthBufFC * 0.5;");
         }
-        src.push("outColor = vColor;");
+        src.push("outColor = newColor;");
         src.push("}");
         return src;
     }
