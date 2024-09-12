@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>xeokit Example</title>
+    <link href="../css/pageStyle.css" rel="stylesheet"/>
+    <style>
+
+    </style>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.13.0/js/all.min.js"></script>
+</head>
+<body>
+<input type="checkbox" id="info-button"/>
+<label for="info-button" class="info-button"><i class="far fa-3x fa-question-circle"></i></label>
+<canvas id="myCanvas"></canvas>
+<canvas id="myNavCubeCanvas"></canvas>
+<div id="treeViewContainer"></div>
+<div class="slideout-sidebar">
+    <img class="info-icon" style="width:280px; padding-bottom:10px;" src="../../assets/images/bim_icon.png"/>
+    <h1>XKTLoaderPlugin and Data Textures</h1>
+    <h2>Loading a BIM model from an XKT file into a data texture model representation</h2>
+
+    <h3>Stats</h3>
+    <ul>
+        <li>
+            <div id="time">Loading JavaScript modules...</div>
+        </li>
+    </ul>
+    <h3>Components used</h3>
+    <ul>
+        <li>
+            <a href="../../docs/class/src/viewer/Viewer.js~Viewer.html"
+               target="_other">Viewer</a>
+        </li>
+        <li>
+            <a href="../../docs/class/src/plugins/XKTLoaderPlugin/XKTLoaderPlugin.js~XKTLoaderPlugin.html"
+               target="_other">XKTLoaderPlugin</a>
+        </li>
+    </ul>
+</div>
+</body>
+
+<script type="module">
+
+    import {Viewer, XKTLoaderPlugin, ReadableGeometry, buildBoxLinesGeometryFromAABB, PhongMaterial, Mesh} from "../../dist/xeokit-sdk.min.es.js";
+
+    const viewer = new Viewer({
+        canvasId: "myCanvas",
+        transparent: true,
+    });
+
+    viewer.scene.camera.eye = [14.915582703146043, 14.396781491179095, 5.431098754133695];
+    viewer.scene.camera.look = [6.599999999999998, 8.34099990051474, -4.159999575600315];
+    viewer.scene.camera.up = [-0.2820584034861215, 0.9025563895259413, -0.3253229483893775];
+
+    const xktLoader = new XKTLoaderPlugin(viewer);
+
+    const sceneModel = xktLoader.load({
+        id: "myModel",
+        src: "../../assets/models/dotbim/BoxAABB_Moved.xkt",
+        saoEnabled: true,
+        edges: true,
+        rotation: [-90,0,0]
+    });
+
+    sceneModel.on("loaded", function () {
+        new Mesh(viewer.scene, {
+            geometry: new ReadableGeometry(viewer.scene, buildBoxLinesGeometryFromAABB({
+                id: "aabb",
+                aabb: sceneModel.aabb,
+            })),
+            material: new PhongMaterial(viewer.scene, {
+                emissive: [0, 0, 0]
+            })
+        });
+    });
+
+    window.viewer = viewer;
+
+</script>
+</html>
