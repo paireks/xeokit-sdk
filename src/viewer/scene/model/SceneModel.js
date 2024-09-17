@@ -3129,6 +3129,7 @@ export class SceneModel extends Component {
             cfg.meshMatrix = cfg.transform.worldMatrix;
         }
         mesh.portionId = mesh.layer.createPortion(mesh, cfg);
+        mesh.numPrimitives = cfg.numPrimitives;
         this._meshes[cfg.id] = mesh;
         this._unusedMeshes[cfg.id] = mesh;
         this._meshList.push(mesh);
@@ -3492,7 +3493,7 @@ export class SceneModel extends Component {
             flags = flags | ENTITY_FLAGS.SELECTED;
         }
         cfg.flags = flags;
-        this._createEntity(cfg);
+        return this._createEntity(cfg);
     }
 
     _createEntity(cfg) {
@@ -3523,6 +3524,7 @@ export class SceneModel extends Component {
         this._entities[cfg.id] = entity;
         this._entitiesToFinalize.push(entity);
         this.numEntities++;
+        return entity;
     }
 
     /**
