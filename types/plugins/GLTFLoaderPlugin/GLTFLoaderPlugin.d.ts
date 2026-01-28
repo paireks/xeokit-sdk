@@ -85,6 +85,8 @@ export declare type LoadGLTFModel = {
   autoMetaModel?: boolean;
   /** Options to pass to loaders.gl parse method, eg. ````{ gltf: { excludeExtensions: { "KHR_texture_transform": false } } }````. */
   parseOptions?: any;
+  /** Create an entity for each mesh, instead of grouping leaf meshes under their common entity. */
+  entityPerMesh?: boolean;
 };
 
 /**
