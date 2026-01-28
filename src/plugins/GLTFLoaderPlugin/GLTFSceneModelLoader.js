@@ -532,9 +532,6 @@ function parseNodeMesh(node, ctx, matrix, meshIds) {
     if (numPrimitives > 0) {
         for (let i = 0; i < numPrimitives; i++) {
             const primitive = mesh.primitives[i];
-            if (primitive.mode < 4) {
-                continue;
-            }
             const meshCfg = {
                 id: ctx.sceneModel.id + "." + ctx.numObjects++
             };
