@@ -125,6 +125,7 @@ function parseGLTF(plugin, src, gltf, metaModelJSON, options, sceneModel, ok, er
             numObjects: 0,
             nodes: [],
             nextId: 0,
+            entityPerMesh: options.entityPerMesh,
             log: (msg) => {
                 plugin.log(msg);
             }
@@ -418,6 +419,49 @@ function loadDefaultScene(ctx) {
             }
         });
     })(nodes);
+
+    if (ctx.entityPerMesh) {
+        const sceneIds = new Set();
+        (function createSceneMeshesAndEntities(nodes, parentId, parentMatrix, dep) {
+            return nodes.reduce(
+                (hadMesh, node) => {
+                    const baseId = node.name ?? "Node";
+                    const maybeGlobalize = id => ctx.globalizeObjectIds ? math.globalizeObjectId(ctx.sceneModel.id, id) : id;
+                    let entityId = maybeGlobalize(baseId);
+                    let nextPostfixId = 1;
+                    while (ctx.sceneModel.objects[entityId] || sceneIds.has(entityId)) {
+                        entityId = maybeGlobalize(`${baseId}.${(nextPostfixId++).toString().padStart(4, "0")}`);
+                    }
+                    sceneIds.add(entityId);
+                    const matrix = parseNodeMatrix(node, parentMatrix);
+
+                    const meshEntity = node.mesh && (function() {
+                        const meshIds = [ ];
+                        parseNodeMesh(node, ctx, matrix, meshIds);
+                        return (meshIds.length > 0) && ctx.sceneModel.createEntity({
+                            id:       entityId,
+                            meshIds:  meshIds,
+                            isObject: true
+                        });
+                    })();
+
+                    const hasMesh = (node.children && createSceneMeshesAndEntities(node.children, entityId, matrix, dep + 1)) || meshEntity;
+
+                    if (hasMesh && ctx.autoMetaModel) {
+                        ctx.metaObjects.push({
+                            id:     entityId,
+                            name:   entityId,
+                            type:   "Default",
+                            parent: parentId
+                        });
+                    }
+
+                    return hadMesh || hasMesh;
+                },
+                false);
+        })(nodes, ctx.sceneModel.id, null, 0);
+        return;
+    }
 
     // Create a SceneMesh for each mesh primitive, and a SceneModelEntity for the root node and each named node.
     const meshIdsStack = [];
