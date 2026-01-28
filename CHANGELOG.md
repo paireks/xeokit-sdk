@@ -1,6 +1,14 @@
 ## xeokit-sdk Changelog
 
 
+# [v2.6.105](https://github.com/xeokit/xeokit-sdk/compare/v2.6.104...v2.6.105)
+
+### 28 Jan 2026
+
+-  XCD-436 Implenent GLTFLoaderPlugin::load's entityPerMesh option [#2017](https://github.com/xeokit/xeokit-sdk/pull/2017)
+-  CHANGE Remove skipping of gltf points and lines - this will make GLTF "points" and "lines" appear - before this change they wouldn't
+
+
 # [v2.6.104](https://github.com/xeokit/xeokit-sdk/compare/v2.6.103...v2.6.104)
 
 ### 14 Jan 2026
